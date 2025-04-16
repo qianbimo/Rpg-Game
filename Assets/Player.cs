@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.XR;
 
 public class player : MonoBehaviour
 {
@@ -13,8 +10,11 @@ public class player : MonoBehaviour
 
     [Header("Dash info")]
     [SerializeField] private float dashDuration;
-    [SerializeField] private float dashTime;
+    private float dashTime;
     [SerializeField] private float dashSpeed;
+    [SerializeField] private float dashCooldown;
+    private float dashCooldownTimer;
+
     private float xInput;
 
     private int facingDir = 1;
@@ -40,14 +40,8 @@ public class player : MonoBehaviour
         CollisionChecks();
 
         dashTime -= Time.deltaTime;
-        if (Input.GetKeyDown(KeyCode.LeftShift))
-        {
-            dashTime = dashDuration;
-        }
-        if(dashTime > 0 )
-        {
-            Debug.Log("Now Dashing");
-        }
+        dashCooldownTimer -= Time.deltaTime;
+
 
 
         FlipController();
@@ -58,7 +52,7 @@ public class player : MonoBehaviour
     private void CollisionChecks()
     {
         isGrounded = Physics2D.Raycast(transform.position, Vector2.down, groundCheckDistance, whatIsGround);
-        
+
     }
 
     private void CheckInput()
@@ -67,6 +61,20 @@ public class player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             Jump();
+        }
+
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            DashAbility();
+        }
+    }
+
+    private void DashAbility()
+    {
+        if (dashCooldownTimer < 0)
+        {
+            dashTime = dashDuration;
+            dashCooldownTimer = dashCooldown;
         }
     }
 
@@ -94,7 +102,7 @@ public class player : MonoBehaviour
     {
         bool isMoving = rb.velocity.x != 0;
 
-        anim.SetFloat("yVelocity",rb.velocity.y);
+        anim.SetFloat("yVelocity", rb.velocity.y);
         anim.SetBool("isMoving", isMoving);
         anim.SetBool("isGrounded", isGrounded);
         anim.SetBool("isDashing", dashTime > 0);
@@ -108,11 +116,11 @@ public class player : MonoBehaviour
     }
     private void FlipController()
     {
-        if(rb.velocity.x > 0 && !facingRight)
+        if (rb.velocity.x > 0 && !facingRight)
         {
             Flip();
         }
-        else if(rb.velocity.x < 0 && facingRight)
+        else if (rb.velocity.x < 0 && facingRight)
         {
             Flip();
         }

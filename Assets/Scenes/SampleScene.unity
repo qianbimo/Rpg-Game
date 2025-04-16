@@ -419,8 +419,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3da28b29ed773154e98d9d31ffe03bad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
-  jumpForce: 7
+  moveSpeed: 15
+  jumpForce: 10
+  dashDuration: 0.4
+  dashSpeed: 25
+  dashCooldown: 1.4
   groundCheckDistance: 1.4
   whatIsGround:
     serializedVersion: 2
@@ -584,7 +587,7 @@ Transform:
   m_GameObject: {fileID: 959262210}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 14.3911, y: -1.9763, z: 0}
+  m_LocalPosition: {x: 14.36, y: -2.33, z: 0}
   m_LocalScale: {x: 11.552941, y: 4.2925, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
